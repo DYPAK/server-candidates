@@ -3,8 +3,8 @@
 class Model_Registration extends Model
 {
     function registrationUser($full_name, $login, $email, $password, $password_confirm) {
-      $key = null;
       $connect = $this->connect;
+      $key = null;
       $password = md5($password);
       $password_confirm = md5($password_confirm);
         if($full_name != NULL && $login != NULL && $email != NULL && $password != NULL && $password_confirm != NULL) {
