@@ -4,7 +4,6 @@ class Controller_Technology extends Controller
 {
     public function __construct()
     {
-        $this->view= new View();
         $this->model = new Model_Technology();
     }
 
@@ -17,6 +16,5 @@ class Controller_Technology extends Controller
             $this->model->addTechnology($_POST["new_technology"]);
         }
 
-        $this->view->generate('technology.php', null, $key_security);
     }
 }

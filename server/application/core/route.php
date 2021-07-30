@@ -11,7 +11,7 @@ class Route
 		$routes = explode('/', $_SERVER['REQUEST_URI']);
 
 		 //получаем имя контроллера
-		if ( (!empty($routes[1]) ) && ($routes[1]!='favicon.ico'))
+		if ( !empty($routes[1])  && ($routes[1]!='favicon.ico') )
 		{
 			$controller_name = $routes[1];
 		}
@@ -20,7 +20,7 @@ class Route
 		if ( !empty($routes[2]) )
 		{
             $action_routes = explode('?', $routes[2]);
-			$action_name = $action_routes[0];
+            $action_name = $action_routes[0];
 		}
 
 		// добавляем префиксы
@@ -57,9 +57,7 @@ class Route
 		{
 			// вызываем действие контроллера
 			$controller->$action();
-//            if ($_POST['wage']){
-//                $controller->start($_POST['full_name'], $_POST['php_skill'], $_POST['java_skill'], $_POST['python_skill'], $_POST['place_work'], $_POST['wage'], $_POST['position'], $_POST['description'], $_POST['review']);
-//            }
+
 		}
 		else
 		{

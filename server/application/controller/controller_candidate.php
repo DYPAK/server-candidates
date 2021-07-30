@@ -5,18 +5,19 @@ class Controller_Candidate extends Controller
 
     public function __construct()
     {
-        $this->view= new View();
         $this->model = new Model_Candidate();
     }
 
     function action_index()
     {
-        if($_POST != NULL)
-        {
-            $this->model->changeCandidate($_POST);
+        $_POST = (array)json_decode(file_get_contents('php://input'), TRUE);
+
+        if (isset($_POST['id'])) {
+            echo json_encode("rrr");
         }
-        $data = $this->model->getAllCandidates();
-        $this->view->generate('candidate.php', null,$data);
+        else {
+            echo json_encode("arr");
+        }
 
     }
 }

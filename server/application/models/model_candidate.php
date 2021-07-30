@@ -8,15 +8,16 @@ class Model_Candidate extends Model
      * @return array
      */
     function getAllCandidates(){
+        $connect = $this->connect;
         // Выбор таблицы
         $table = "candidates";
 
         //Получение массива технологий
-        $column_candidates = mysqli_query($this->connect, "SHOW COLUMNS FROM `".$table."`");
+        $column_candidates = mysqli_query($connect, "SHOW COLUMNS FROM `".$table."`");
         $column_candidates = mysqli_fetch_all($column_candidates);
 
         //Получение кандидатов
-        $all_candidates = mysqli_query($this->connect, "SELECT * FROM `".$table."`");
+        $all_candidates = mysqli_query($connect, "SELECT * FROM `".$table."`");
         $all_candidates = mysqli_fetch_all($all_candidates);
 
         for ($i = 7; $i < count($column_candidates); $i++)
