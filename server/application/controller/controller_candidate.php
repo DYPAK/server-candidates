@@ -2,6 +2,7 @@
 
 class Controller_Candidate extends Controller
 {
+    const CANDIDATES = 5;
 
     public function __construct()
     {
@@ -16,8 +17,10 @@ class Controller_Candidate extends Controller
             echo json_encode("rrr");
         }
         else {
-            echo json_encode("arr");
+            $allTechnologies = $this->model->getAllTechnologies();
+            $mas = $this->model->getAllCandidates($allTechnologies);
+            $candidates = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES);
+            echo json_encode($candidates);
         }
-
     }
 }

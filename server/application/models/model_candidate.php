@@ -2,59 +2,70 @@
 
 class Model_Candidate extends Model
 {
-    /**
-     * function return
-     * array from data base candidates
-     * @return array
-     */
-    function getAllCandidates(){
-        $connect = $this->connect;
-        // Выбор таблицы
-        $table = "candidates";
 
-        //Получение массива технологий
-        $column_candidates = mysqli_query($connect, "SHOW COLUMNS FROM `".$table."`");
-        $column_candidates = mysqli_fetch_all($column_candidates);
-
-        //Получение кандидатов
-        $all_candidates = mysqli_query($connect, "SELECT * FROM `".$table."`");
-        $all_candidates = mysqli_fetch_all($all_candidates);
-
-        for ($i = 7; $i < count($column_candidates); $i++)
-        {
-            $all_technology[$i] = $column_candidates[$i][0];
-        }
-
-        $data[0] = $all_candidates;
-        $data[1] = $all_technology;
-
-        return $data;
+    function getAllTechnologies()
+    {
+        $sql = "SELECT technology FROM `technologies`";
+        $query = $this->connect->prepare($sql);
+        $query ->execute();
+        $mas = $query -> fetchAll(PDO::FETCH_NAMED);
+        $result = Array();
+            $i = 0;
+            foreach ($mas as $technology)
+            {
+                $result[$i] = $technology['technology'];
+                $i++;
+            }
+        return $result;
     }
 
-    function changeCandidate($data)
-    {
-        $connect = $this->connect;
-        // Выбор таблицы
-        $table = "candidates";
+    function getAllCandidates($technologiesCheck=[], $name="", $dateStart="0001-01-01", $dateEnd="9999-12-31") {
 
-        $sql = "UPDATE `".$table."` SET ";
+        $sql = 'SELECT id_candidates, full_name, date_of_birth, description, technology, skill  FROM `candidates` can JOIN `connect` c ON can.id = c.id_candidates JOIN `technologies` t ON c.id_technologies = t.id '
+            .'WHERE (full_name LIKE ? ) AND (date_of_birth >= ?) AND (date_of_birth <= ?)';
 
-        $i = 0;
-        foreach ($data as $key => $value)
-        {
-            $mas_key[$i] = $key;
-            $mas_value[$i]= $value;
-            $i++;
+        $params = [0 => "%$name%", 1 => $dateStart, 2 => $dateEnd];
+
+        if ($technologiesCheck != null) {
+            $sql .=" AND (technology = ? )";
+            $params[3] = $technologiesCheck[0];
+            for($i = 1; $i < count($technologiesCheck); $i++ ) {
+                $sql .=" OR (technology = ? )";
+                $params[$i+3] = $technologiesCheck[$i];
+            }
         }
+        $sql .= "ORDER BY can.id";
+        $query = $this->connect->prepare($sql);
+            $query ->execute($params);
+        return $query -> fetchAll(PDO::FETCH_CLASS);
 
-        for ($i = 0; $i < count($data)-2; $i++)
-        {
-            $sql .= '`'.$mas_key[$i]."` = '".$mas_value[$i]."', ";
+    }
+
+    function sortCandidates($allCandidates, $technologiesBase, $candidates_one_page, $page=1) {
+        $cand= [];
+        $technologies = [];
+        if (isset($technologiesBase))
+            foreach($technologiesBase as $technologyBase) {
+                $technologies[$technologyBase] = 0;
+            }
+        $temp_2 = -1; $temp_1 = $allCandidates[0]->id_candidates + 1;
+        $result['technologies'] = $technologiesBase;
+        for ($i = 0; $i < count($allCandidates); $i++) {
+            if ($temp_1 != $allCandidates[$i] ->id_candidates) {
+                $temp_2++;
+                $cand[$temp_2]['id'] = $allCandidates[$i] -> id_candidates;
+                $cand[$temp_2]['name'] = $allCandidates[$i] -> full_name;
+                $cand[$temp_2]['date'] = $allCandidates[$i] -> date_of_birth;
+                $cand[$temp_2]['description'] = $allCandidates[$i] -> description;
+                $cand[$temp_2]['technology'] = $technologies;
+                $temp_1 = $allCandidates[$i] ->id_candidates;
+            }
+            $cand[$temp_2]['technology'][$allCandidates[$i] ->technology] = $allCandidates[$i] ->skill;
+
         }
-
-        $sql .= "`".$mas_key[$i]."` = '".$mas_value[$i]."' WHERE `".$table.'`.`'.$mas_key[$i + 1].'` = '.$mas_value[$i+1];
-
-        mysqli_query($connect, $sql);
+        $result['maxPage'] = ++$temp_2;
+        $result['candidate'] = $cand;
+        return $result;
     }
 
 }
