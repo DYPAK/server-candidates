@@ -4,13 +4,16 @@ class Model_Authorization extends Model
 {
     function authorizationUser($login, $password)
     {
-        $connect = $this->connect;
         $key = null;
         $password = md5($password);
         if ($login != "" && $password != "")
         {
-            $check_user = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login' AND `password` = '$password'");
-            if(mysqli_num_rows($check_user) > 0) {
+            $sql = "SELECT * FROM `users` WHERE `login`=:login AND `password`=:password";
+            $query = $this->connect->prepare($sql);
+            $params = ['login'=> $login, 'password'=>$password];
+            $query ->execute($params);
+            $check_user = $query -> fetch(PDO::FETCH_NUM) ;
+            if($check_user != NULL) {
                 $key = true;
             }
             else{

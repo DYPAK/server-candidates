@@ -17,6 +17,9 @@ class Controller_Authorization extends Controller
             $login = trim($_POST['login']);
             $password = trim($_POST['password']);
 
+            $login = htmlspecialchars($login);
+            $password = htmlspecialchars($password);
+
             $key = $this->model->authorizationUser($login, $password);
             if (isset($key))
                 echo json_encode($key);
