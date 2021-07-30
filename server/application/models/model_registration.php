@@ -11,7 +11,7 @@ class Model_Registration extends Model
               $data_email = "SELECT * FROM `users` WHERE `email`!=:email";
               $query_email = $connect->prepare($data_email);
               $email_param = ['email'=>$email];
-              $query_email->execute($email_param);
+              $query_email -> execute($email_param);
               $check_email = $query_email -> fetch(PDO::FETCH_NUM);
               if($check_email != NULL) {
                 if($password == $password_confirm){
