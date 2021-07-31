@@ -2,6 +2,15 @@
 
 class Model_AddCandidate extends Model
 {
+    /**
+     * Add new candidate in base
+     * in table candidate and table connect
+     * @param $name
+     * @param $date
+     * @param $description
+     * @param $technologies
+     * @return bool
+     */
     function AddCandidate($name, $date, $description, $technologies) {
         $key_security = 0;
         $sql = "INSERT INTO `candidates` (`id`, `full_name`, `description`, `date_of_birth`) VALUES (NULL, :name , :description, :date );";
