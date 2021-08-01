@@ -1,27 +1,3 @@
-<<<<<<< HEAD
-<?php
-
-class Controller_Candidate extends Controller
-{
-
-    public function __construct()
-    {
-        $this->model = new Model_Candidate();
-    }
-
-    function action_index()
-    {
-        $_POST = (array)json_decode(file_get_contents('php://input'), TRUE);
-
-        if (isset($_POST['id'])) {
-            echo json_encode("rrr");
-        }
-        else {
-            echo json_encode("arr");
-        }
-
-    }
-=======
 <?php
 
 class Controller_Candidate extends Controller
@@ -84,5 +60,5 @@ class Controller_Candidate extends Controller
         }
         echo json_encode($output);
     }
->>>>>>> 785a677b0f9f43ff19f1957ce50a97de5229b9ce
+
 }
