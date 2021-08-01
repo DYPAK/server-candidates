@@ -113,6 +113,11 @@ class Model_Candidate extends Model
 
     }
 
+    function UpdateCandidateAddTechnologies($id, $technologies) {
+        //$sql = 'INSERT INTO connect '
+    }
+
+
     function checkSelector($selector, $number_page, $max_page)
     {
         if (preg_match("/(-)|(\+)/",$selector)) {

@@ -9,12 +9,16 @@ class Controller_Technology extends Controller
 
     function action_index()
     {
-        $key_security = $this->model->checkTechnology($_POST["new_technology"]);
-
-        if ($key_security)
-        {
-            $this->model->addTechnology($_POST["new_technology"]);
+        $output = false;
+        $_POST = (array)json_decode(file_get_contents('php://input'), TRUE);
+        if(isset($_POST['updateTechnology'])) {
+            $id = htmlspecialchars(trim($_POST['updateTechnology']['id']));
+            $name = htmlspecialchars(trim($_POST['updateTechnology']['newName']));
+            $output = $this->model->updateTechnology($id,$name);
+        } else {
+            $output = $this->model->getAllTechnologies();
         }
 
+        echo json_encode($output);
     }
 }
