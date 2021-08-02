@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 
 class Controller_Technologies extends Controller
