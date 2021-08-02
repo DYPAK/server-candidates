@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июл 28 2021 г., 15:26
+-- Время создания: Авг 02 2021 г., 07:12
 -- Версия сервера: 8.0.19
 -- Версия PHP: 7.4.14
 
@@ -30,12 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `candidates` (
   `id` int NOT NULL,
   `full_name` varchar(255) NOT NULL,
-  `place_work` text NOT NULL,
-  `wage` int NOT NULL,
-  `position` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `review` text NOT NULL,
-  `registration_date` date NOT NULL,
   `date_of_birth` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -43,13 +38,12 @@ CREATE TABLE `candidates` (
 -- Дамп данных таблицы `candidates`
 --
 
-INSERT INTO `candidates` (`id`, `full_name`, `place_work`, `wage`, `position`, `description`, `review`, `registration_date`, `date_of_birth`) VALUES
-(75, 'fsdfsadfsd', 'fasdfsa', 34234, 'safsdas', 'adfsadf', 'sadfas', '2021-07-26', '2021-07-25'),
-(82, 'Петя', 'detds', 14212, 'fafsd', 'dsafdsa', 'fdsdfsdfas', '2021-07-26', '2021-07-25'),
-(83, 'Саня', 'asdfasdf', 4123423, 'sdafasdfsad', 'fsdfas', 'dfsadfds', '2021-07-26', '2021-07-25'),
-(89, 'kail', 'sdafas', 3123, 'safasd', 'adsas', 'adasdfa', '2021-07-27', '2021-07-25'),
-(90, 'kail', 'sdafas', 3123, 'safasd', 'adsas', 'adasdfa', '2021-07-27', '2021-07-25'),
-(91, 'kail', 'sdafas', 3123, 'safasd', 'adsas', 'adasdfa', '2021-07-27', '2021-07-25');
+INSERT INTO `candidates` (`id`, `full_name`, `description`, `date_of_birth`) VALUES
+(75, 'KEK', 'LOL', '6666-01-01'),
+(82, 'Боб', 'Умен', '2021-01-01'),
+(83, 'KEK', 'LOL', '6666-01-01'),
+(102, 'Ironwood', 'asdas', '1985-12-01'),
+(108, 'Лytt', 'iiiiii', '2021-01-01');
 
 -- --------------------------------------------------------
 
@@ -69,10 +63,21 @@ CREATE TABLE `connect` (
 --
 
 INSERT INTO `connect` (`id`, `id_candidates`, `id_technologies`, `skill`) VALUES
-(3, 82, 2, 5),
-(4, 83, 4, 5),
+(3, 82, 2, 2),
+(4, 83, 4, 3),
 (5, 75, 4, 3),
-(6, 82, 4, 3);
+(6, 82, 4, 1),
+(7, 102, 2, 1),
+(8, 102, 4, 1),
+(9, 102, 3, 1),
+(10, 82, 3, 1),
+(11, 75, 2, 3),
+(12, 75, 3, 0),
+(13, 83, 2, 2),
+(15, 108, 2, 1),
+(16, 108, 3, 1),
+(17, 108, 4, 1),
+(18, 108, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -92,7 +97,8 @@ CREATE TABLE `technologies` (
 INSERT INTO `technologies` (`id`, `technology`) VALUES
 (2, 'C++'),
 (3, 'PascalABC'),
-(4, 'C#');
+(4, 'Java'),
+(5, 'ReactJs');
 
 -- --------------------------------------------------------
 
@@ -136,7 +142,9 @@ INSERT INTO `users` (`id`, `full_name`, `login`, `email`, `password`) VALUES
 (27, 'Алексей', 'RRS', 'TR@gmail.com', 'd93591bdf7860e1e4ee2fca799911215'),
 (28, 'TES', 'TES', 'gh@gmail.com', '76d80224611fc919a5d54f0ff9fba446'),
 (29, 'Петя', 'TTR', 'gsh@gmail.com', '202cb962ac59075b964b07152d234b70'),
-(30, 'Петя', 'TTRE', 'gsh@gmail.com', '202cb962ac59075b964b07152d234b70');
+(30, 'Петя', 'TTRE', 'gsh@gmail.com', '202cb962ac59075b964b07152d234b70'),
+(31, 'asdas', 'Sagid', 'sada@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055'),
+(46, 'KTO_TO', 'Leark', 'kue@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055');
 
 --
 -- Индексы сохранённых таблиц
@@ -174,25 +182,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `candidates`
 --
 ALTER TABLE `candidates`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT для таблицы `connect`
 --
 ALTER TABLE `connect`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT для таблицы `technologies`
 --
 ALTER TABLE `technologies`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
