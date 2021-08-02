@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 
 class Controller_Technologies extends Controller
@@ -11,4 +12,5 @@ class Controller_Technologies extends Controller
     {
         $data = $this->model->getAllTechnologies();
     }
+
 }

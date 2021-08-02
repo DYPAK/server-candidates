@@ -21,4 +21,5 @@ class Controller_Technology extends Controller
 
         echo json_encode($output);
     }
+
 }

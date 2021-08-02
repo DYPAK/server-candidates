@@ -130,6 +130,5 @@ class Model_Candidate extends Model
         }
         return $number_page;
     }
-
-
 }
+

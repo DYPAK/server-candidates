@@ -35,5 +35,4 @@ class Model_Technology extends Model
 
         return $query->execute($params);
     }
-
 }
