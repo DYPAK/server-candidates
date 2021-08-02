@@ -13,11 +13,8 @@ class Controller_Authorization extends Controller
 
         if (isset($_POST['login'])) {
 
-            $login = trim($_POST['login']);
-            $password = trim($_POST['password']);
-
-            $login = htmlspecialchars($login);
-            $password = htmlspecialchars($password);
+            $login = htmlspecialchars(trim($_POST['login']));
+            $password = htmlspecialchars(trim($_POST['password']));
 
             $key = $this->model->authorizationUser($login, $password);
             if (isset($key))

@@ -10,6 +10,7 @@ class Controller_AddCandidate extends Controller
     function action_index()
     {
         $answer = false;
+        $_POST = (array)json_decode(file_get_contents('php://input'), TRUE);
         if ($_POST['candidateObject']) {
             $technology = [];
             foreach ($_POST['candidateObject']['technologies'] as $key => $value)
@@ -23,8 +24,8 @@ class Controller_AddCandidate extends Controller
                 $description = htmlspecialchars(trim($_POST['candidateObject']['description']));
                 $answer = $this->model->AddCandidate($name,$date,$description,$technology);
             }
+            echo json_encode($answer);
         }
-        echo json_encode($answer);
     }
 
 }
