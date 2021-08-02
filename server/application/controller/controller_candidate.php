@@ -12,6 +12,13 @@ class Controller_Candidate extends Controller
     function action_index()
     {
         $output = false;
+        if ($_SESSION['namePage'] != "candidate") {
+            $_SESSION['name'] = "";
+            $_SESSION['dateStart'] = "0001-01-01";
+            $_SESSION['dateEnd'] = "9999-12-31";
+            $_SESSION['technology'] = [];
+        }
+        $_SESSION['namePage'] = "candidate";
         $_POST = (array)json_decode(file_get_contents('php://input'), TRUE);
 
         if (isset($_POST['updateCandidate'])) {
@@ -56,10 +63,6 @@ class Controller_Candidate extends Controller
             $output = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES);
         }
         else {
-            $_SESSION['name'] = "";
-            $_SESSION['dateStart'] = "0001-01-01";
-            $_SESSION['dateEnd'] = "9999-12-31";
-            $_SESSION['technology'] = [];
             $allTechnologies = $this->model->getAllTechnologies();
             $mas = $this->model->getAllCandidates($_SESSION['technology'],$_SESSION['name'],$_SESSION['dateStart'],$_SESSION['dateEnd']);
             $output = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES);

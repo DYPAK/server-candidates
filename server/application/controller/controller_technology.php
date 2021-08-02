@@ -9,6 +9,7 @@ class Controller_Technology extends Controller
 
     function action_index()
     {
+        $_SESSION['namePage'] = "technology";
         $output = false;
         $_POST = (array)json_decode(file_get_contents('php://input'), TRUE);
         if(isset($_POST['updateTechnology'])) {

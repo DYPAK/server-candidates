@@ -9,6 +9,7 @@ class Controller_AddCandidate extends Controller
 
     function action_index()
     {
+        $_SESSION['namePage'] = "addcandidate";
         $answer = false;
         $_POST = (array)json_decode(file_get_contents('php://input'), TRUE);
         if ($_POST['candidateObject']) {

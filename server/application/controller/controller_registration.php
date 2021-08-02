@@ -9,6 +9,7 @@ class Controller_Registration extends Controller
 
     function action_index()
     {
+        $_SESSION['namePage'] = "registration";
         $_POST = (array)json_decode(file_get_contents('php://input'), TRUE);
 
         if (isset($_POST['registration']['full_name'])) {
