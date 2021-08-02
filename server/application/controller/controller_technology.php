@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 
 class Controller_Technology extends Controller
@@ -10,33 +9,17 @@ class Controller_Technology extends Controller
 
     function action_index()
     {
-        $key_security = $this->model->checkTechnology($_POST["new_technology"]);
-
-        if ($key_security)
-        {
-            $this->model->addTechnology($_POST["new_technology"]);
+        $output = false;
+        $_POST = (array)json_decode(file_get_contents('php://input'), TRUE);
+        if(isset($_POST['updateTechnology'])) {
+            $id = htmlspecialchars(trim($_POST['updateTechnology']['id']));
+            $name = htmlspecialchars(trim($_POST['updateTechnology']['newName']));
+            $output = $this->model->updateTechnology($id,$name);
+        } else {
+            $output = $this->model->getAllTechnologies();
         }
 
-    }
-=======
-<?php
-
-class Controller_Technology extends Controller
-{
-    public function __construct()
-    {
-        $this->model = new Model_Technology();
+        echo json_encode($output);
     }
 
-    function action_index()
-    {
-        $key_security = $this->model->checkTechnology($_POST["new_technology"]);
-
-        if ($key_security)
-        {
-            $this->model->addTechnology($_POST["new_technology"]);
-        }
-
-    }
->>>>>>> 785a677b0f9f43ff19f1957ce50a97de5229b9ce
 }

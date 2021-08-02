@@ -1,65 +1,3 @@
-<<<<<<< HEAD
-<?php
-
-class Model_Candidate extends Model
-{
-    /**
-     * function return
-     * array from data base candidates
-     * @return array
-     */
-    function getAllCandidates(){
-        $connect = $this->connect;
-        // Выбор таблицы
-        $table = "candidates";
-
-        //Получение массива технологий
-        $column_candidates = mysqli_query($connect, "SHOW COLUMNS FROM `".$table."`");
-        $column_candidates = mysqli_fetch_all($column_candidates);
-
-        //Получение кандидатов
-        $all_candidates = mysqli_query($connect, "SELECT * FROM `".$table."`");
-        $all_candidates = mysqli_fetch_all($all_candidates);
-
-        for ($i = 7; $i < count($column_candidates); $i++)
-        {
-            $all_technology[$i] = $column_candidates[$i][0];
-        }
-
-        $data[0] = $all_candidates;
-        $data[1] = $all_technology;
-
-        return $data;
-    }
-
-    function changeCandidate($data)
-    {
-        $connect = $this->connect;
-        // Выбор таблицы
-        $table = "candidates";
-
-        $sql = "UPDATE `".$table."` SET ";
-
-        $i = 0;
-        foreach ($data as $key => $value)
-        {
-            $mas_key[$i] = $key;
-            $mas_value[$i]= $value;
-            $i++;
-        }
-
-        for ($i = 0; $i < count($data)-2; $i++)
-        {
-            $sql .= '`'.$mas_key[$i]."` = '".$mas_value[$i]."', ";
-        }
-
-        $sql .= "`".$mas_key[$i]."` = '".$mas_value[$i]."' WHERE `".$table.'`.`'.$mas_key[$i + 1].'` = '.$mas_value[$i+1];
-
-        mysqli_query($connect, $sql);
-    }
-
-}
-=======
 <?php
 
 class Model_Candidate extends Model
@@ -71,16 +9,14 @@ class Model_Candidate extends Model
      */
     function getAllTechnologies()
     {
-        $sql = "SELECT technology FROM `technologies`";
+        $sql = "SELECT id, technology FROM `technologies`";
         $query = $this->connect->prepare($sql);
         $query ->execute();
         $mas = $query -> fetchAll(PDO::FETCH_NAMED);
         $result = Array();
-            $i = 0;
-            foreach ($mas as $technology)
+            foreach ($mas as $value)
             {
-                $result[$i] = $technology['technology'];
-                $i++;
+                $result[$value['id']] = $value['technology'];
             }
         return $result;
     }
@@ -97,7 +33,7 @@ class Model_Candidate extends Model
      */
     function getAllCandidates($technologiesCheck=[], $name="", $dateStart="0001-01-01", $dateEnd="9999-12-31") {
 
-        $sql = 'SELECT id_candidates, full_name, date_of_birth, description, technology, skill  FROM `candidates` can JOIN `connect` c ON can.id = c.id_candidates JOIN `technologies` t ON c.id_technologies = t.id '
+        $sql = 'SELECT id_candidates, full_name, date_of_birth, description, id_technologies, technology, skill  FROM `candidates` can JOIN `connect` c ON can.id = c.id_candidates JOIN `technologies` t ON c.id_technologies = t.id '
             .'WHERE (full_name LIKE ? ) AND (date_of_birth >= ?) AND (date_of_birth <= ?)';
 
         $params = [0 => "%$name%", 1 => $dateStart, 2 => $dateEnd];
@@ -128,13 +64,14 @@ class Model_Candidate extends Model
      */
     function sortCandidates($allCandidates, $technologiesBase, $candidates_one_page, $page=1) {
         $cand= [];
-        $technologies = [];
+        $technologies = []; $j = 0;
         if (isset($technologiesBase))
-            foreach($technologiesBase as $technologyBase) {
-                $technologies[$technologyBase] = 0;
+            foreach($technologiesBase as $key => $value) {
+                $technologies[$key] = ['name' => $value, 'value' => 0];
+                $result['technologies'][$j] =  $value;
+                $j++;
             }
         $j = -1; $temp_1 = $allCandidates[0]->id_candidates + 1;
-        $result['technologies'] = $technologiesBase;
         for ($i = 0; $i < count($allCandidates); $i++) {
             if ($temp_1 != $allCandidates[$i] ->id_candidates) {
                 $j++;
@@ -143,11 +80,10 @@ class Model_Candidate extends Model
                 $cand[$j]['name'] = $allCandidates[$i] -> full_name;
                 $cand[$j]['date'] = $allCandidates[$i] -> date_of_birth;
                 $cand[$j]['description'] = $allCandidates[$i] -> description;
-                $cand[$j]['technology'] = $technologies;
+                $cand[$j]['technologies'] = $technologies;
                 $temp_1 = $allCandidates[$i] ->id_candidates;
             }
-            $cand[$j]['technology'][$allCandidates[$i] ->technology] = $allCandidates[$i] ->skill;
-
+            $cand[$j]['technologies'][$allCandidates[$i] ->id_technologies]['value'] = $allCandidates[$i] ->skill;
         }
         $j = 0; $i = $page-1; $candidates_one_page = $candidates_one_page + $i;
         while (($i < $candidates_one_page) && ($cand[$i] == [])) {
@@ -160,27 +96,39 @@ class Model_Candidate extends Model
         return $result;
     }
 
-//    function UpdateCandidate($id, $name, $date, $description, $technologies) {
-//        $sql = 'SELECT id_candidates, full_name, date_of_birth, description, technology, skill  FROM `candidates` can JOIN `connect` c ON can.id = c.id_candidates JOIN `technologies` t ON c.id_technologies = t.id '
-//            .'WHERE (full_name LIKE ? ) AND (date_of_birth >= ?) AND (date_of_birth <= ?)';
-//
-//        //  $params = [0 => "%$name%", 1 => $dateStart, 2 => $dateEnd];
-//
-//    }
-//
-//    function checkSelector($selector, $number_page, $max_page)
-//    {
-//        if (preg_match("/(-)|(\+)/",$selector)) {
-//            ($selector == "+")? $selector = ++$number_page : $selector = --$number_page;
-//        }
-//        if (preg_match("/\d+/",$selector)) {
-//            ($selector > $max_page) ? $selector = $max_page : 0 ;
-//            ($selector < 1) ? $selector = 1 : 0 ;
-//            return (int)$selector;
-//        }
-//        return $number_page;
-//    }
+    function UpdateCandidate($id, $name, $date, $description, $technologies) {
+        $sql = 'UPDATE connect INNER JOIN candidates ON id_candidates = candidates.id  SET candidates.full_name = ? , candidates.date_of_birth = ? , candidates.description = ? ,  connect.skill = CASE';
+        $params = [0 => $name, 1 => $date, 2 => $description]; $i = 3;
+        foreach($technologies as $key => $value) {
+            $sql .= ' WHEN id_technologies = ? THEN ? ';
+            $params[$i] = $key;
+            $i++;
+            $params[$i] = $value;
+            $i++;
+        }
+        $params[$i] = $id;
+        $sql .= " ELSE connect.skill END WHERE candidates.id = ? ";
+        $query = $this->connect->prepare($sql);
+        return $query ->execute($params);
+
+    }
+
+    function UpdateCandidateAddTechnologies($id, $technologies) {
+        //$sql = 'INSERT INTO connect '
+    }
 
 
+    function checkSelector($selector, $number_page, $max_page)
+    {
+        if (preg_match("/(-)|(\+)/",$selector)) {
+            ($selector == "+")? $selector = ++$number_page : $selector = --$number_page;
+        }
+        if (preg_match("/\d+/",$selector)) {
+            ($selector > $max_page) ? $selector = $max_page : 0 ;
+            ($selector < 1) ? $selector = 1 : 0 ;
+            return (int)$selector;
+        }
+        return $number_page;
+    }
 }
->>>>>>> 785a677b0f9f43ff19f1957ce50a97de5229b9ce
+
