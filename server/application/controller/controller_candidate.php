@@ -24,35 +24,44 @@ class Controller_Candidate extends Controller
             foreach ($_POST['updateCandidate']['technologies'] as $key => $value)
             {
                 $i = htmlspecialchars(trim($key));
-                $technology[$key] = htmlspecialchars(trim($value['skill']));
+                $technology[$i] = htmlspecialchars(trim($value['value']));
             }
             if ($technology != []) {
                 $output = $this->model->UpdateCandidate($id,$name,$date,$description,$technology);
             }
 
         }
-        else if (isset($_POST['page'])) {
-            $page =  htmlspecialchars(trim($_POST['page']));
-            $this->model->checkSelector($_POST['page']);
+        else if (isset($_POST['send'])) {
+            $selectorAction =  htmlspecialchars(trim($_POST['send']['selectorAction']));
+            $currentPage =  htmlspecialchars(trim($_POST['send']['currentPage']));
+            $maxPage =  htmlspecialchars(trim($_POST['send']['maxPage']));
+            $page = $this->model->checkSelector($selectorAction, $currentPage, $maxPage );
+            $allTechnologies = $this->model->getAllTechnologies();
+            $mas = $this->model->getAllCandidates($_SESSION['technology'],$_SESSION['name'],$_SESSION['dateStart'],$_SESSION['dateEnd']);
+            $output = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES, $page);
         }
         else if (isset($_POST['searchCandidates'])) {
-            $name = htmlspecialchars(trim($_POST['searchCandidates']['name']));
-            $dateStart = htmlspecialchars(trim($_POST['searchCandidates']['dateStart']));
-            $dateEnd = htmlspecialchars(trim($_POST['searchCandidates']['dateEnd']));
+            $_SESSION['name'] = htmlspecialchars(trim($_POST['searchCandidates']['name']));
+            $_SESSION['dateStart'] = htmlspecialchars(trim($_POST['searchCandidates']['dateStart']));
+            $_SESSION['dateEnd'] = htmlspecialchars(trim($_POST['searchCandidates']['dateEnd']));
             $i=0;
-            $technology = [];
+            $_SESSION['technology'] = [];
             foreach ($_POST['searchCandidates']['technologies'] as $value)
             {
-                $technology[$i] = htmlspecialchars(trim($value));
+                $_SESSION['technology'][$i] = htmlspecialchars(trim($value));
                 $i++;
             }
             $allTechnologies = $this->model->getAllTechnologies();
-            $mas = $this->model->getAllCandidates($technology,$name,$dateStart,$dateEnd);
+            $mas = $this->model->getAllCandidates($_SESSION['technology'],$_SESSION['name'],$_SESSION['dateStart'],$_SESSION['dateEnd']);
             $output = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES);
         }
         else {
+            $_SESSION['name'] = "";
+            $_SESSION['dateStart'] = "0001-01-01";
+            $_SESSION['dateEnd'] = "9999-12-31";
+            $_SESSION['technology'] = [];
             $allTechnologies = $this->model->getAllTechnologies();
-            $mas = $this->model->getAllCandidates();
+            $mas = $this->model->getAllCandidates($_SESSION['technology'],$_SESSION['name'],$_SESSION['dateStart'],$_SESSION['dateEnd']);
             $output = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES);
         }
         echo json_encode($output);

@@ -32,4 +32,17 @@ class Model_AddCandidate extends Model
         ($key_security == 0) ? $key = true : $key = false;
         return $key;
     }
+
+    function getAllTechnologies() {
+        $sql = "SELECT id, technology FROM `technologies`";
+        $query = $this->connect->prepare($sql);
+        $query ->execute();
+        $mas = $query -> fetchAll(PDO::FETCH_NAMED);
+        $result = Array();
+        foreach ($mas as $value)
+        {
+            $result[$value['id']]['name'] = $value['technology'];
+        }
+        return $result;
+    }
 }

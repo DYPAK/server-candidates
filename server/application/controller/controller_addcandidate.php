@@ -13,10 +13,10 @@ class Controller_AddCandidate extends Controller
         $_POST = (array)json_decode(file_get_contents('php://input'), TRUE);
         if ($_POST['candidateObject']) {
             $technology = [];
-            foreach ($_POST['candidateObject']['technologies'] as $key => $value)
+            foreach ($_POST['candidateObject']['technologies'] as $key => $id)
             {
                 $i = htmlspecialchars(trim($key));
-                $technology[$i] = htmlspecialchars(trim($value));
+                $technology[$i] = htmlspecialchars(trim($id['value']));
             }
             if ($technology != []) {
                 $name = htmlspecialchars(trim($_POST['candidateObject']['name']));
@@ -25,6 +25,8 @@ class Controller_AddCandidate extends Controller
                 $answer = $this->model->AddCandidate($name,$date,$description,$technology);
             }
             echo json_encode($answer);
+        } else {
+           echo json_encode($this->model->getAllTechnologies());
         }
     }
 

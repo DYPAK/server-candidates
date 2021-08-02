@@ -120,8 +120,8 @@ class Model_Candidate extends Model
 
     function checkSelector($selector, $number_page, $max_page)
     {
-        if (preg_match("/(-)|(\+)/",$selector)) {
-            ($selector == "+")? $selector = ++$number_page : $selector = --$number_page;
+        if ((bool)$selector) {
+            ($selector)? $selector = ++$number_page : $selector = --$number_page;
         }
         if (preg_match("/\d+/",$selector)) {
             ($selector > $max_page) ? $selector = $max_page : 0 ;
