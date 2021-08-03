@@ -2,7 +2,7 @@
 
 class Controller_Candidate extends Controller
 {
-    const CANDIDATES = 5;
+    const CANDIDATES = 2;
 
     public function __construct()
     {
@@ -31,21 +31,26 @@ class Controller_Candidate extends Controller
             foreach ($_POST['updateCandidate']['technologies'] as $key => $value)
             {
                 $i = htmlspecialchars(trim($key));
-                $technology[$i] = htmlspecialchars(trim($value['value']));
+                $technology[$i]['skill'] = htmlspecialchars(trim($value['value']));
+                if ($value['id_connect'] != null) {
+                    $technology[$i]['id_connect'] = htmlspecialchars(trim($value['id_connect']));
+                } else {
+                    $technology[$i]['id_connect'] = $value['id_connect'];
+                }
             }
             if ($technology != []) {
                 $output = $this->model->UpdateCandidate($id,$name,$date,$description,$technology);
             }
-
         }
         else if (isset($_POST['send'])) {
-            $selectorAction =  htmlspecialchars(trim($_POST['send']['selectorAction']));
+            $selectorAction =  $_POST['send']['selectorAction'];
             $currentPage =  htmlspecialchars(trim($_POST['send']['currentPage']));
             $maxPage =  htmlspecialchars(trim($_POST['send']['maxPage']));
             $page = $this->model->checkSelector($selectorAction, $currentPage, $maxPage );
             $allTechnologies = $this->model->getAllTechnologies();
             $mas = $this->model->getAllCandidates($_SESSION['technology'],$_SESSION['name'],$_SESSION['dateStart'],$_SESSION['dateEnd']);
             $output = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES, $page);
+            //$output = ($_POST['send']['selectorAction']);
         }
         else if (isset($_POST['searchCandidates'])) {
             $_SESSION['name'] = htmlspecialchars(trim($_POST['searchCandidates']['name']));
@@ -66,6 +71,10 @@ class Controller_Candidate extends Controller
             $allTechnologies = $this->model->getAllTechnologies();
             $mas = $this->model->getAllCandidates($_SESSION['technology'],$_SESSION['name'],$_SESSION['dateStart'],$_SESSION['dateEnd']);
             $output = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES);
+//            $allTechnologies = $this->model->getAllTechnologies();
+//            $candidates = $this->model->getAllCandidates(self::CANDIDATES);
+//            $skills = $this->model->getAllSkill($candidates);
+//            $output = $this->model->sortCandidates($allTechnologies, $candidates, $skills);
         }
         echo json_encode($output);
     }

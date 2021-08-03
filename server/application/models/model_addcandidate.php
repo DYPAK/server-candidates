@@ -42,6 +42,7 @@ class Model_AddCandidate extends Model
         foreach ($mas as $value)
         {
             $result[$value['id']]['name'] = $value['technology'];
+            $result[$value['id']]['value'] = 0;
         }
         return $result;
     }

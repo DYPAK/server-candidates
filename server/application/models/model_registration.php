@@ -21,6 +21,7 @@ class Model_Registration extends Model
                 $email_param = ['email'=>$email];
                 $query_email -> execute($email_param);
                 $check_email = $query_email -> fetch(PDO::FETCH_NUM);
+                $key = preg_match('/[\@gmail.com,\@mail.ru]/', $email);
                 if($check_email != NULL) {
                     if($password == $password_confirm){
                     $sql= "INSERT INTO `users` (`id`, `full_name`, `login`, `email`, `password`) VALUES (NULL, :full_name, :login, :email, :password )";
