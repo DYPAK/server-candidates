@@ -42,7 +42,7 @@ class Model_Candidate extends Model
             $sql .=" AND (technology = ? )";
             $params[3] = $technologiesCheck[0];
             for($i = 1; $i < count($technologiesCheck); $i++ ) {
-                $sql .=" OR (technology = ? )";
+                $sql .=" AND (technology = ? )";
                 $params[$i+3] = $technologiesCheck[$i];
             }
         }

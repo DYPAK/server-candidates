@@ -57,6 +57,8 @@ class Controller_Candidate extends Controller
             $_SESSION['dateStart'] = htmlspecialchars(trim($_POST['searchCandidates']['dateStart']));
             $_SESSION['dateEnd'] = htmlspecialchars(trim($_POST['searchCandidates']['dateEnd']));
             $i=0;
+            ($_SESSION['dateStart'] == "") ? $_SESSION['dateStart'] = "0001-01-01" : 0;
+            ($_SESSION['dateEnd'] == "") ? $_SESSION['dateEnd'] = "9999-11-20" : 0 ;
             $_SESSION['technology'] = [];
             foreach ($_POST['searchCandidates']['technologies'] as $value)
             {

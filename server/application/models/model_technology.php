@@ -9,7 +9,7 @@ class Model_Technology extends Model
      */
     function getAllTechnologies()
     {
-        $sql = "SELECT id, technology FROM `technologies`";
+        $sql = "SELECT id, technology FROM `technologies` ";
         $query = $this->connect->prepare($sql);
         $query ->execute();
         $mas = $query -> fetchAll(PDO::FETCH_NAMED);
@@ -28,11 +28,20 @@ class Model_Technology extends Model
      * @return bool
      */
     function updateTechnology($id,$name) {
-
-        $sql = "UPDATE `technologies` SET `technology` = :name WHERE `technologies`.`id` = :id";
-        $params = ['name' => $name, 'id' => $id];
+        $sql = "SELECT * FROM `technologies` WHERE `technology` != :name";
         $query = $this->connect->prepare($sql);
-
-        return $query->execute($params);
+        $param = ['name'=>$name];
+        $query -> execute($param);
+        $key = $query -> fetch(PDO::FETCH_NUM);
+        if($key != NULL) {
+            $sql = "UPDATE `technologies` SET `technology` = :name WHERE `technologies`.`id` = :id";
+            $params = ['name' => $name, 'id' => $id];
+            $query = $this->connect->prepare($sql);
+            $key = $query->execute($params);
+        }
+        else{
+            $key = false;
+        }
+        return $key;
     }
 }
