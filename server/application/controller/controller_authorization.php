@@ -22,9 +22,6 @@ class Controller_Authorization extends Controller
                 echo json_encode($key);
         }
 
-        if($_GET['page'] != NULL) {
-            echo json_encode("lol");
-        }
        
     }
 }

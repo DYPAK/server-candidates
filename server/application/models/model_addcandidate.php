@@ -33,6 +33,10 @@ class Model_AddCandidate extends Model
         return $key;
     }
 
+    /** Функция пвозвращает из бд
+     * все технологии
+     * @return array
+     */
     function getAllTechnologies() {
         $sql = "SELECT id, technology FROM `technologies`";
         $query = $this->connect->prepare($sql);
