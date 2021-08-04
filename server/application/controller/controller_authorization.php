@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 class Controller_Authorization extends Controller
 {
     public function __construct()

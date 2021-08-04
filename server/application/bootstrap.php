@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /* подключаем файлы ядра */
 require_once 'core/controller.php';
 require_once 'core/model.php';

@@ -39,10 +39,10 @@ class Model_Candidate extends Model
         $params = [0 => "%$name%", 1 => $dateStart, 2 => $dateEnd];
 
         if ($technologiesCheck != []) {
-            $sql .=" AND (technology = ? )";
+            $sql .=" AND (technology = ? AND skill > 0 )";
             $params[3] = $technologiesCheck[0];
             for($i = 1; $i < count($technologiesCheck); $i++ ) {
-                $sql .=" AND (technology = ? )";
+                $sql .=" OR (technology = ? AND skill > 0 )";
                 $params[$i+3] = $technologiesCheck[$i];
             }
         }

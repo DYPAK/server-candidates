@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 class Controller_Candidate extends Controller
 {
     const CANDIDATES = 2;
@@ -12,6 +12,7 @@ class Controller_Candidate extends Controller
     function action_index()
     {
         $output = false;
+        $_SESSION['BAD'] = $_GET;
         if ($_SESSION['namePage'] != "candidate") {
             $_SESSION['name'] = "";
             $_SESSION['dateStart'] = "0001-01-01";

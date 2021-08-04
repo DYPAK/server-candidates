@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 class Model_Registration extends Model
 {
     /**

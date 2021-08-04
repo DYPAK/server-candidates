@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 class Controller_Registration extends Controller
 {
     public function __construct()
