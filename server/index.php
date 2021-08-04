@@ -1,8 +1,8 @@
 <?php
 //ini_set('session.use_cookies', 1);
 //ini_set('session.use_trans_sid', 1);
-ini_set('session.cookie_lifetime', 3600);
-ini_set('session.cookie_httponly', 0);
+//ini_set('session.cookie_lifetime', 3600);
+//ini_set('session.cookie_httponly', 0);
 //ini_set('session.cookie_domain', '*');
 //session_set_cookie_params(7200, "/", "localhost:8080/ListCandidates", false, false);
 //ini_set('session.gc_maxlifetime', 3600*24*30);

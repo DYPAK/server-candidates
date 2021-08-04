@@ -12,7 +12,6 @@ class Controller_Candidate extends Controller
     function action_index()
     {
         $output = false;
-        $_SESSION['BAD'] = $_GET;
         if ($_SESSION['namePage'] != "candidate") {
             $_SESSION['name'] = "";
             $_SESSION['dateStart'] = "0001-01-01";
@@ -49,9 +48,12 @@ class Controller_Candidate extends Controller
             $maxPage =  htmlspecialchars(trim($_POST['send']['maxPage']));
             $page = $this->model->checkSelector($selectorAction, $currentPage, $maxPage );
             $allTechnologies = $this->model->getAllTechnologies();
-            $mas = $this->model->getAllCandidates($_SESSION['technology'],$_SESSION['name'],$_SESSION['dateStart'],$_SESSION['dateEnd']);
-            $output = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES, $page);
+            $mas = $this->model->getAllCandidates(self::CANDIDATES, $_SESSION['name'], $_SESSION['dateStart'],$_SESSION['dateEnd'],$_SESSION['technology'],$page);
+            //$output = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES, $page);
             //$output = ($_POST['send']['selectorAction']);
+            $skills = $this->model->getAllSkill($mas['candidates']);
+            $output = $this->model->sortCandidates($allTechnologies, $mas['candidates'], $skills,($page-1)*self::CANDIDATES+1);
+            $output['maxPage'] = $mas['maxPage'];
         }
         else if (isset($_POST['searchCandidates'])) {
             $_SESSION['name'] = htmlspecialchars(trim($_POST['searchCandidates']['name']));
@@ -67,17 +69,21 @@ class Controller_Candidate extends Controller
                 $i++;
             }
             $allTechnologies = $this->model->getAllTechnologies();
-            $mas = $this->model->getAllCandidates($_SESSION['technology'],$_SESSION['name'],$_SESSION['dateStart'],$_SESSION['dateEnd']);
-            $output = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES);
+            $mas = $this->model->getAllCandidates(self::CANDIDATES,$_SESSION['name'],$_SESSION['dateStart'],$_SESSION['dateEnd'], $_SESSION['technology']);
+            $skills = $this->model->getAllSkill($mas['candidates']);
+            $output = $this->model->sortCandidates($allTechnologies, $mas['candidates'],$skills);
+            $output['maxPage'] = $mas['maxPage'];
         }
         else {
-            $allTechnologies = $this->model->getAllTechnologies();
-            $mas = $this->model->getAllCandidates($_SESSION['technology'],$_SESSION['name'],$_SESSION['dateStart'],$_SESSION['dateEnd']);
-            $output = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES);
 //            $allTechnologies = $this->model->getAllTechnologies();
-//            $candidates = $this->model->getAllCandidates(self::CANDIDATES);
-//            $skills = $this->model->getAllSkill($candidates);
-//            $output = $this->model->sortCandidates($allTechnologies, $candidates, $skills);
+//            $mas = $this->model->getAllCandidates($_SESSION['technology'],$_SESSION['name'],$_SESSION['dateStart'],$_SESSION['dateEnd']);
+//            $output = $this->model->sortCandidates($mas,$allTechnologies,self::CANDIDATES);
+            $allTechnologies = $this->model->getAllTechnologies();
+            $candidates = $this->model->getAllCandidates(self::CANDIDATES, "", "0001-01-01","9999-11-20",[]);
+            $skills = $this->model->getAllSkill($candidates['candidates']);
+            $output = $this->model->sortCandidates($allTechnologies, $candidates['candidates'], $skills);
+            $output['maxPage'] = $candidates['maxPage'];
+            //echo json_encode($candidates);
         }
         echo json_encode($output);
     }
