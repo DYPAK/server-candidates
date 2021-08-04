@@ -2,7 +2,7 @@
 session_start();
 class Controller_Candidate extends Controller
 {
-    const CANDIDATES = 2;
+    const CANDIDATES = 5;
 
     public function __construct()
     {
