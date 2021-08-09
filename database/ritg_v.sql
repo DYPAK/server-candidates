@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Авг 09 2021 г., 10:48
+-- Время создания: Авг 09 2021 г., 13:15
 -- Версия сервера: 8.0.19
 -- Версия PHP: 7.4.14
 
@@ -39,7 +39,7 @@ CREATE TABLE `candidates` (
 --
 
 INSERT INTO `candidates` (`id`, `full_name`, `description`, `date_of_birth`) VALUES
-(75, 'Солнышков Петр Алексеевич', 'Быстро обучаем', '2021-03-30'),
+(75, 'Солнышков Олег', 'Изменение', '1985-12-01'),
 (82, 'Боб', 'Умен', '2021-01-01'),
 (83, 'Кирилл Алексеевич', 'Разбирается во фреймах', '2002-01-01'),
 (102, 'James Ironwood', 'американец', '1985-12-01'),
@@ -73,10 +73,10 @@ CREATE TABLE `connect` (
 INSERT INTO `connect` (`id`, `id_candidates`, `id_technologies`, `skill`) VALUES
 (3, 82, 2, 2),
 (4, 83, 4, 3),
-(5, 75, 4, 3),
+(5, 75, 4, 1),
 (6, 82, 4, 1),
 (10, 82, 3, 1),
-(11, 75, 2, 3),
+(11, 75, 2, 1),
 (12, 75, 3, 1),
 (13, 83, 2, 2),
 (15, 108, 2, 1),
@@ -138,8 +138,8 @@ CREATE TABLE `technologies` (
 
 INSERT INTO `technologies` (`id`, `technology`) VALUES
 (2, 'C++'),
-(3, 'PascalABC'),
 (4, 'Java'),
+(3, 'PascalABC'),
 (5, 'ReactJs');
 
 -- --------------------------------------------------------
@@ -165,16 +165,7 @@ INSERT INTO `users` (`id`, `full_name`, `login`, `email`, `password`) VALUES
 (3, 'Дима Никитин', 'Diman', 'velieff@yandex.ru', '698d51a19d8a121ce581499d7b701668'),
 (6, 'Дима Никитин', 'Diman', 'velieff@gmail.com', '698d51a19d8a121ce581499d7b701668'),
 (8, 'Сагид Физулиевич Велиев', 'Sagid', 'dagfarid73@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055'),
-(10, 'Cергей Иванов', 'Roman4432', 'roman200@reere.ru', 'bcbe3365e6ac95ea2c0343a2395834dd'),
-(11, 'Роман Андреев', 'Roman443', 'roman200@reere.ru', 'bcbe3365e6ac95ea2c0343a2395834dd'),
-(13, 'Петр Петров', 'Peter', 'roman200@reere.ru', '289dff07669d7a23de0ef88d2f7129e7'),
-(15, 'Виктор Шурчалов', 'viktor', 'velieff@yandex.ru', '202cb962ac59075b964b07152d234b70'),
-(16, 'Виталий Антонов', 'VityaAk', 'roman200@reere.ru', '827ccb0eea8a706c4c34a16891f84e7b'),
-(19, 'Виктор Шурчалов', 'viktor', 'velieff@yandex.ru', '202cb962ac59075b964b07152d234b70'),
-(21, 'Дима Никитин', 'Dima88448848', 'velieff@yandex.ru', '550a141f12de6341fba65b0ad0433500'),
 (22, 'Петр Петров', 'Peter32423432', 'roma1131231200@reere.ru', '550a141f12de6341fba65b0ad0433500'),
-(24, 'Дима Никитин', 'Diman', 'velieff@yandex.ru', 'cf79ae6addba60ad018347359bd144d2'),
-(25, 'Петр Петров', 'Peter Е', 'roman200@reere.ru', '81dc9bdb52d04dc20036dbd8313ed055'),
 (31, 'asdas', 'Sagid', 'sada@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055');
 
 --
@@ -197,13 +188,15 @@ ALTER TABLE `connect`
 -- Индексы таблицы `technologies`
 --
 ALTER TABLE `technologies`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `technology` (`technology`);
 
 --
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -225,7 +218,7 @@ ALTER TABLE `connect`
 -- AUTO_INCREMENT для таблицы `technologies`
 --
 ALTER TABLE `technologies`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
