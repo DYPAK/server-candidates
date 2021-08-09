@@ -27,7 +27,7 @@ class Controller_Candidate extends Controller
             $name = htmlspecialchars(trim($_POST['updateCandidate']['name']));
             $date = htmlspecialchars(trim($_POST['updateCandidate']['date']));
             $description = htmlspecialchars(trim($_POST['updateCandidate']['description']));
-            $technology = $this->checkUpdateCandidate($_POST['updateCandidate']['technologies']);
+            $technology = $this->checkUpdateCandidate($_POST);
             if ($technology != []) {
                 $output = $this->model->UpdateCandidate($id,$name,$date,$description,$technology);
             }

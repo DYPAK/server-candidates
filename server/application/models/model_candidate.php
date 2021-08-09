@@ -135,11 +135,11 @@ class Model_Candidate extends Model
      * @return bool
      */
     function UpdateCandidate($id, $name, $date, $description, $technologies) {
-        $key = 0;
+        $key_security = 0;
         $sql = 'UPDATE candidates SET full_name = ? , date_of_birth = ? , description = ?  WHERE id = ? ';
         $params = [0 => $name, 1 => $date, 2 => $description, 3 => $id];
         $query = $this->connect->prepare($sql);
-        ($query ->execute($params)) ? 0 : ++$key;
+        ($query ->execute($params)) ? 0 : ++$key_security;
         $sql = 'REPLACE INTO connect VALUES ';
         $params = []; $i = 0;
         foreach($technologies as $key => $value) {
@@ -151,9 +151,9 @@ class Model_Candidate extends Model
         }
         $sql = substr_replace($sql,';',-2);
         $query = $this->connect->prepare($sql);
-        ($query ->execute($params)) ? 0 : ++$key;
-        ($key == 0) ? $key = true : $key = false;
-        return $key;
+        ($query ->execute($params)) ? 0 : ++$key_security;
+        ($key_security== 0) ? $key_security = true : $key_security = false;
+        return $key_security;
     }
 
     /**
