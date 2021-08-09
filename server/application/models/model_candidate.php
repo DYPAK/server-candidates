@@ -35,19 +35,22 @@ class Model_Candidate extends Model
      */
     function getAllCandidates($limit, $name="", $dateStart = "0001-01-01", $dateEnd = "9999-11-20", $technologies = [],$page=1) {
 
-        $sql = ' SELECT id_candidates, full_name, date_of_birth, description FROM `candidates` can JOIN `connect` c ON can.id = c.id_candidates JOIN `technologies` t ON c.id_technologies = t.id  WHERE (full_name LIKE ? ) AND (date_of_birth >= ? ) AND (date_of_birth <= ? ) ';
+        $sql = ' SELECT id_candidates, count(id_candidates) as CU, full_name, date_of_birth, description FROM `candidates` can JOIN `connect` c ON can.id = c.id_candidates JOIN `technologies` t ON c.id_technologies = t.id  WHERE (full_name LIKE ? ) AND (date_of_birth >= ? ) AND (date_of_birth <= ? ) ';
         $params = [0 => "%$name%", 1 =>$dateStart, 2 => $dateEnd]; $i = 3;
         if ($technologies != []) {
             $j = 0;
             $sql .= ' AND ( technology = ? AND skill > 0 )';
             $params[$i] = $technologies[$j]; $j++;
-            for ($i = 4; $i < count($technologies)-1; $i++) {
+            for ($i = 4; $i < count($technologies)+3; $i++) {
                 $sql .= ' OR ( technology = ? AND skill > 0 )';
                 $params[$i] = $technologies[$j]; $j++;
             }
         }
-
-        $sql .= ' GROUP BY can.id ORDER BY can.id ASC';
+        $sql .= ' GROUP BY can.id ';
+        if ($technologies != []) {
+            $sql .= ' HAVING CU = '.count($technologies);
+        }
+        $sql .= ' ORDER BY can.id ASC';
         $query = $this->connect->prepare($sql);
         $query ->execute($params);
         $mas =  $query -> fetchAll(PDO::FETCH_CLASS); //PDO::FETCH_CLASS
