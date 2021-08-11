@@ -18,8 +18,11 @@ class Controller_Authorization extends Controller
             $password = htmlspecialchars(trim($_POST['password']));
 
             $key = $this->model->authorizationUser($login, $password);
-            if (isset($key))
+            if (isset($key)) {
+
+                $_SESSION['security_check'] = $key;
                 echo json_encode($key);
+            }
         }
 
        
