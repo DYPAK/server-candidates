@@ -3,8 +3,8 @@ session_start();
 class Model_AddCandidate extends Model
 {
     /**
-     * Add new candidate in base
-     * in table candidate and table connect
+     * Добавляет нового кандидата в базу
+     * в таблицы candidate и connect
      * @param $name
      * @param $date
      * @param $description

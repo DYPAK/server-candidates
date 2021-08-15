@@ -3,8 +3,8 @@ session_start();
 class Model_Technology extends Model
 {
     /**
-     * function take from base
-     * all technology and return
+     * Функция выдает из бд
+     * массив технологий и их id
      * @return array
      */
     function getAllTechnologies()
@@ -22,26 +22,15 @@ class Model_Technology extends Model
     }
 
     /**
-     * function update technology
+     * Функция обновляет технологию
      * @param $id (int)
      * @param $name (string)
      * @return bool
      */
     function updateTechnology($id,$name) {
-        $sql = "SELECT * FROM `technologies` WHERE `technology` != :name";
+        $sql = "UPDATE `technologies` SET `technology` = :name WHERE `technologies`.`id` = :id";
+        $params = ['name' => $name, 'id' => $id];
         $query = $this->connect->prepare($sql);
-        $param = ['name'=>$name];
-        $query -> execute($param);
-        $key = $query -> fetch(PDO::FETCH_NUM);
-        if($key != NULL) {
-            $sql = "UPDATE `technologies` SET `technology` = :name WHERE `technologies`.`id` = :id";
-            $params = ['name' => $name, 'id' => $id];
-            $query = $this->connect->prepare($sql);
-            $key = $query->execute($params);
-        }
-        else{
-            $key = false;
-        }
-        return $key;
+        return  $query->execute($params);
     }
 }

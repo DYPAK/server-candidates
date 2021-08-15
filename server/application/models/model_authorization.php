@@ -3,7 +3,7 @@ session_start();
 class Model_Authorization extends Model
 {
     /**
-     * function authorization user
+     * Функция авторизирует пользователя
      * @param $login
      * @param $password
      * @return bool|null

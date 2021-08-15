@@ -3,8 +3,8 @@
 class Model_Candidate extends Model
 {
     /**
-     * function take
-     * in bd mas technologies
+     * Функция выдает
+     * из бд массив технологий
      * @return array
      */
     function getAllTechnologies()

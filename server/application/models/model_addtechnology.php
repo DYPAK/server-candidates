@@ -3,8 +3,8 @@ session_start();
 class Model_AddTechnology extends Model
 {
     /**
-     * function add technology
-     * in base
+     * Функция добавляет технологию
+     * в таблицу
      * @param $name
      * @return bool
      */
